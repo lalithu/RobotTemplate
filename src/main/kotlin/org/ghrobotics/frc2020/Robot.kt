@@ -7,6 +7,7 @@ package org.ghrobotics.frc2020
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import org.ghrobotics.frc2020.subsytems.Drivetrain
+import org.ghrobotics.frc2020.subsytems.MySubsystem
 import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
 object Robot : FalconTimedRobot() {
@@ -15,6 +16,11 @@ object Robot : FalconTimedRobot() {
     init {
         // Register the drivetrain into the SubsystemHandler.
         +Drivetrain
+    }
+    object Robot : FalconTimedRobot() {
+        init {
+            +MySubsystem
+        }
     }
 
     // Runs once when robot boots up
