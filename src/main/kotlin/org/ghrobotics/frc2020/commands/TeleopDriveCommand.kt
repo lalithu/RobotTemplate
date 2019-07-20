@@ -3,27 +3,27 @@ package org.ghrobotics.frc2020.commands
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.experimental.command.SendableCommandBase
 import org.ghrobotics.frc2020.Controls
-import org.ghrobotics.frc2020.subsytems.DriveSubsytem
+import org.ghrobotics.frc2020.subsytems.DriveSubsystem
+import org.ghrobotics.lib.wrappers.hid.getRawButton
 import org.ghrobotics.lib.wrappers.hid.getX
 import org.ghrobotics.lib.wrappers.hid.getY
+import org.ghrobotics.lib.wrappers.hid.kX
 
-class TeleopDriveCommand  : SendableCommandBase() {
-
+class TeleopDriveCommand : SendableCommandBase() {
     init {
-        addRequirements(DriveSubsytem)
+        addRequirements(DriveSubsystem)
     }
 
-    //Getting Joystick Return Values
-    val leftJoystick = Controls.driverController.getY(GenericHID.Hand.kLeft)
-    val rightJoystick = Controls.driverController.getY(GenericHID.Hand.kRight)
-
+    private val linearPercent = Controls.driverController.getY(GenericHID.Hand.kLeft)
+    private val curvaturePercent = Controls.driverController.getX(GenericHID.Hand.kLeft)
+    private val quickTurn = Controls.driverController.getRawButton(kX)
 
     override fun execute() {
-        DriveSubsytem.set(-leftJoystick(), -rightJoystick())
-    }
-
-    override fun isFinished(): Boolean {
-        return false
+        DriveSubsystem.curvatureDrive(
+                -linearPercent(),
+                curvaturePercent(),
+                quickTurn()
+        )
     }
 
 }
